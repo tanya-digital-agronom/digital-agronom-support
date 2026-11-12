@@ -1,5 +1,36 @@
 <!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Журнал обращений · Цифровой Агроном</title><style>
 :root{--orange:#ed842e;--ink:#202b36;--muted:#798796;--border:#e6ebf0;--bg:#f6f8fb;--green:#19845b}*{box-sizing:border-box}body{margin:0;background:var(--bg);font:14px/1.5 Inter,'Segoe UI',Arial,sans-serif;color:var(--ink)}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.55;cursor:wait}.hidden{display:none!important}.shell{display:flex;min-height:100vh}.side{width:244px;background:white;border-right:1px solid var(--border);padding:27px 16px;display:flex;flex-direction:column;gap:8px;position:sticky;top:0;height:100vh}.identity{display:flex;align-items:center;gap:12px;padding:0 8px 24px;border-bottom:1px solid var(--border);margin-bottom:15px}.identity img{width:51px;height:51px;object-fit:contain}.identity strong{font-size:14px;line-height:1.2}.identity small{display:block;color:var(--muted);font-size:11px;margin-top:4px}.nav{width:100%;display:flex;align-items:center;gap:12px;padding:12px 13px;background:transparent;border:0;border-radius:11px;color:#667585;text-align:left;font-weight:650}.nav:hover{background:#f6f7f9}.nav.active{background:#fff1e7;color:#c9661e}.nav svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.bottom{margin-top:auto;padding:12px;border-radius:12px;background:#f7f9fb;overflow-wrap:anywhere}.bottom small{color:var(--muted)}.main{width:100%;min-width:0;max-width:1650px;margin:auto;padding:30px 38px 65px}.header{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:24px}.overline{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--orange);font-weight:800}h1{font-size:29px;letter-spacing:-.8px;margin:4px 0}h2{font-size:17px;margin:0 0 17px}p{margin:0}.muted{color:var(--muted)}.btn{border:1px solid var(--border);border-radius:10px;background:white;padding:10px 15px;font-weight:700;color:var(--ink)}.btn:hover{filter:brightness(.98)}.primary{background:var(--orange);border-color:var(--orange);color:white}.danger{color:#b33831}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.card{background:white;border:1px solid var(--border);border-radius:17px;padding:22px;box-shadow:0 3px 15px #1c2b3c06}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:16px}.metric{position:relative}.metric:before{content:'';position:absolute;top:0;left:22px;width:36px;height:3px;background:var(--orange);border-radius:3px}.metric .value{font-size:31px;font-weight:800;letter-spacing:-1px;margin:10px 0 2px}.metric .label{font-size:12px;color:var(--muted)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}.bars{display:grid;gap:13px}.bar{display:grid;grid-template-columns:minmax(80px,155px) 1fr 30px;gap:12px;align-items:center;font-size:12px}.bar .name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.track{background:#f0f3f6;height:12px;border-radius:10px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#f5b47a,#ed842e);border-radius:10px}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.field{display:flex;flex-direction:column;gap:6px}.field label{font-size:12px;font-weight:700}.field input,.field textarea,.field select,.filter{width:100%;border:1px solid #dfe5eb;border-radius:10px;padding:11px 12px;background:white;outline:none;color:var(--ink)}.field input:focus,.field textarea:focus,.field select:focus,.filter:focus{border-color:var(--orange);box-shadow:0 0 0 3px #ed842e22}.field textarea{min-height:105px;resize:vertical}.full{grid-column:1/-1}.toolbar{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:10px;margin-bottom:15px}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:900px}th{text-align:left;font-size:11px;color:var(--muted);background:#fafbfd}td,th{padding:13px 10px;border-bottom:1px solid #edf0f3;vertical-align:top}td{font-size:12px}tr:hover td{background:#fffdfa}.pill{display:inline-block;padding:4px 9px;border-radius:8px;font-size:11px;font-weight:700;background:#edf2ff;color:#47689e}.pill.done{background:#e4f7ed;color:#23794e}.pill.open{background:#fff1e4;color:#a8661d}.link{border:0;background:none;color:#d67829;font-weight:700;padding:5px}.notice{border:1px solid #f8dfc7;background:#fff9f3;color:#825c39;border-radius:12px;padding:12px 16px;margin-bottom:16px}.view{display:none}.view.active{display:block}.empty{padding:30px;text-align:center;color:var(--muted)}.toast{position:fixed;bottom:22px;right:22px;z-index:20;background:#253340;color:white;padding:13px 18px;border-radius:11px;max-width:400px;box-shadow:0 10px 30px #0002}.authwrap{min-height:100vh;display:grid;place-items:center;padding:20px}.authbox{width:100%;max-width:430px}.authlogo{width:65px;height:65px;object-fit:contain;margin-bottom:15px}.authbox .field{margin:14px 0}.statusline{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}.dot{width:8px;height:8px;background:#20a46a;border-radius:50%}.error{color:#bb3434}.subtle{font-size:12px;color:var(--muted)}@media(max-width:1050px){.side{width:75px;align-items:center;padding:16px 7px}.identity{padding:0 0 14px}.identity strong,.identity small,.nav span,.bottom{display:none}.nav{justify-content:center}.main{padding:23px}.metrics{grid-template-columns:repeat(2,1fr)}}@media(max-width:720px){.shell{display:block}.side{width:100%;height:auto;position:sticky;z-index:5;flex-direction:row;justify-content:space-around;padding:7px;background:white}.identity{border:0;margin:0;padding:0}.identity img{width:37px;height:37px}.nav{width:auto;padding:10px}.main{padding:17px 12px}.grid,.formgrid,.toolbar{grid-template-columns:1fr}.metrics{gap:8px}.card{padding:16px}.metric .value{font-size:24px}h1{font-size:24px}}
+</style><style id="agro-unified-select-style">
+.agro-select{position:relative;display:block;width:100%;min-width:0}
+.agro-select>select{position:absolute!important;top:0!important;left:0!important;width:1px!important;height:1px!important;padding:0!important;margin:0!important;border:0!important;opacity:0!important;pointer-events:none!important;clip-path:inset(50%);z-index:-1}
+.agro-select__trigger{display:flex;align-items:center;justify-content:space-between;gap:11px;width:100%;min-width:0;min-height:43px;padding:10px 12px 10px 13px;background:#fff;border:1px solid #dfe5eb;border-radius:11px;color:#334451;font:inherit;font-size:13px;font-weight:600;line-height:1.35;text-align:left;box-shadow:0 1px 3px rgba(26,43,54,.035);transition:border-color .17s,background .17s,box-shadow .17s;cursor:pointer!important}
+.agro-select__trigger:hover{border-color:#edaa75;background:#fffdfa}
+.agro-select.is-open>.agro-select__trigger,.agro-select__trigger:focus-visible{outline:none;border-color:#ed842e;box-shadow:0 0 0 3px rgba(237,132,46,.15);background:#fff}
+.agro-select__text{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.agro-select.is-placeholder .agro-select__text{color:#7b8894;font-weight:500}
+.agro-select__arrow{display:block;flex:none;width:16px;height:16px;color:#9b795c;transition:transform .17s}
+.agro-select.is-open .agro-select__arrow{transform:rotate(180deg)}
+.agro-select__trigger:disabled{opacity:.66;cursor:not-allowed!important;background:#f4f6f7}
+.agro-select__popover{position:fixed;z-index:100000;box-sizing:border-box;padding:7px;background:#fff;border:1px solid #e8ddd2;border-radius:13px;box-shadow:0 15px 38px rgba(36,48,58,.18),0 2px 8px rgba(36,48,58,.05);overflow:hidden;font-family:Inter,'Segoe UI',Arial,sans-serif}
+.agro-select__search-wrap{padding:3px 3px 8px}
+.agro-select__search{display:block;width:100%;min-height:38px;padding:9px 11px;border:1px solid #e2e8ee;border-radius:9px;background:#f8fafb;color:#354655;font:inherit;font-size:13px;outline:none}
+.agro-select__search:focus{border-color:#e8a36b;box-shadow:0 0 0 3px rgba(237,132,46,.12);background:#fff}
+.agro-select__items{display:flex;flex-direction:column;gap:3px;max-height:265px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#d9dfe3 transparent}
+.agro-select__item{position:relative;display:flex;align-items:center;width:100%;min-height:36px;padding:9px 33px 9px 12px;border:0;border-radius:8px;background:transparent;text-align:left;color:#415260;font:inherit;font-size:13px;font-weight:550;line-height:1.3;overflow-wrap:anywhere;cursor:pointer!important}
+.agro-select__item:hover,.agro-select__item.is-active{background:#fff3e9;color:#a6541d}
+.agro-select__item[aria-selected="true"]{background:#fef0e3;color:#bf651e;font-weight:750}
+.agro-select__item[aria-selected="true"]::after{content:"✓";position:absolute;right:12px;top:50%;transform:translateY(-50%);font-weight:800;color:#e07e2f}
+.agro-select__item:disabled{opacity:.45;cursor:not-allowed!important}
+.agro-select__none{padding:14px 12px;text-align:center;color:#86929b;font-size:13px}
+.plan-toolbar>.agro-select{flex:0 1 220px;width:220px;min-width:175px}
+.plan-add-form>.agro-select{flex:0 1 195px;width:195px;min-width:165px}
+.plan-table .agro-select,.tablewrap td .agro-select{min-width:145px}
+#view-users .tablewrap .agro-select{min-width:150px}
+.agro-select>select.plan-select.complete+.agro-select__trigger,.agro-select>select.task-status-select.completed+.agro-select__trigger{background:#e7f7ed;border-color:#b8e6cb;color:#187447}
+.agro-select>select.plan-select.progress+.agro-select__trigger,.agro-select>select.task-status-select.in-progress+.agro-select__trigger{background:#fff1e4;border-color:#f4d5b7;color:#a45d1e}
+.agro-select>select.task-status-select.not-started+.agro-select__trigger{background:#f1f4f7;border-color:#dce4eb;color:#667585}
+.agro-select>select.plan-select+.agro-select__trigger,.agro-select>select.task-status-select+.agro-select__trigger{min-height:37px;font-size:12px;font-weight:700;padding:8px 11px}
+@media(max-width:600px){.agro-select__popover{border-radius:12px}.agro-select__item{min-height:43px}.plan-toolbar>.agro-select{flex:1 1 170px;width:auto}.plan-add-form>.agro-select{flex:1 1 170px;width:auto}}
 </style></head><body>
 <div id="setup" class="authwrap hidden"><div class="card authbox"><img class="authlogo" src="data:image/png;base64,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" alt="Логотип Цифрового Агронома"><h1>Первичная настройка</h1><p class="muted">Введите URL проекта и публичный ключ Supabase. Они сохранятся только в этом браузере.</p><div class="field"><label>Project URL</label><input id="projectUrl" placeholder="https://xxxxx.supabase.co" autocomplete="off"></div><div class="field"><label>Publishable / anon key</label><textarea id="publicKey" placeholder="sb_publishable_... или eyJ..."></textarea></div><button class="btn primary" id="saveConfig">Подключить</button><p class="subtle" style="margin-top:15px">Никогда не вставляйте сюда service_role или secret key.</p></div></div>
 <div id="login" class="authwrap hidden"><form class="card authbox" id="loginForm"><img class="authlogo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAB2ZJREFUeAHdW91t5DYQdgkp4UrwY+DlAi7hOsiVkA6SDmTJyLPTwaWDdQe+Dnwd7EsAn6UFNvgojjQczlCkd7V7iIEFKZHzy/kjKd/cXPDv2Nz/8t5sPw+d+3pot69D547+17oXvOubuy8XZOeypA7N9nMkNAkv2r7dvP7vFDE8bJtptYXA9vttc9klWoHasbn/VLLqlhJgDW/Nr59WYG19lG+Nux9at7eEGzq37zv3jB/61jwoAe6zPsdnpJAz+b7bvB4eU4H6bvvl0LHAKF2ldX+ckcV1UMHkh87tzNXs3HPOpD38mBHG7CCV0LldDn4dqQqxwuRz/t637qEQ1c3Quj9NJY5Z4rYU10Xm/Wg2v1sMj75en9/hErnYMPwMLoHCBgWMJTz8/RST9VkkExf6bvN0Cv6TrKNv7m5zJg+lWMxBMLhEiBc79HNzc5ZwlVTpTT6f4o7wY03Dh3bzm5UeMabBvGdiAlkfeNJgz/rOm3xhVaetaMgSVoT372FZkungalm4URHbBnMl/FmevT/yDUyaomYGH92LRrRvt3/TisHsiVkR9XcqbOe+E2yuXcUlcmarMYPqThOCfBnBUY4Pc/7fyzE85+oLhYf92TZUSDcKgdFcQ1VHgk3zDAugcU1BXMBCBeyHR3e/avWYF949MxPGfn52gc6pq9jPZrznMSJyL1t50X6BlBjiipmKP1wv9I0vRLhQc19E+JDS5nEoo3H3ciV5NIevInLjF6VTgRs4/MYqVvARNDl+EUcWeeGwaj9iaibuzU4CQFhhAWAgCWawmJzJIjaQVXEaGi/vyoYKfGj4oWyOb7GP7acUaKmqS+IAlKaUq0hzEjc9c7cgJjU31IIozQ8uEbmLx69YJMEkLU9XxFzf5ev5vtP3A1qBwl2B8A9degIE2Hl8jjFLvBgL+JQIar1gKcn7Uk7jHIeEm5gX2n8bt82Rn8rV14QAvmJexCFLKZyXZ2I8+P57u/mHC2r1fTTXNy9R1Ae8pMFxejNWSm0IIRXF4XgfPOdo8LlJXwJi15VMMl4EH098UFZokgah80rUK04UN0mZTHCy1dxYzjGfJXM1CgBSK4VCCYjylgv4LKELf1zyeynMuS2gLo3AxO0d3E7L6yGV6sdpSm0gBZbPWjySc8xnaQF4/rfC/AhxRglRANToTe8+IHxIhQkN4muxnYjPBRCib3Ec4AQ0X9TwG+++clylfYtmKXwSoSfmRDorQQi/1sxxwsmUHL17dC9aVbhE00qfwL0EO41HjMQMVkViQphJj4mZgnZNuiMaaK30SfLwudk+AWitTGdZRGww+GWSHiWNU4TX9gwcP2Mn3+VAWv+jSjA2TZEV1KY7SOItzEifnP+81GyUA1l9yukMrKi7cIxeHWhztYPkvYhBTJKA5nNbH6hyVlBa5nJBagIsh8v2pcB9656H8Rw/MtcwrzpV8eOviZZxEpRj9PCwfZrgWbAOBzRJUZXDFY1JpFQDWPkVq4BPX1DhlayidoIkT3gihsIDcINGKLUTAcE3eMR0jVcNp/rOUgAmF5pc9hY33PtF1pQLfiGDqAJHvDIrWk0BpYVNLlNoCtCOuKDw0giP9MkLp9UUQExFmh+Llyec9IgzueRcEPCaAnDEjTH5F8WLR/cCGppw0vW0ORK3+awJJydzV8BxGI1LC5GMYV6pAoLpe1dJVpgfwTHTJz7WVwD7EoSIUvsjZi5Z2VIF8G0zcBJ+ammh6I6A3qNdXQH8wIH73kjcX337ldN8+yMKgOlzAbl1aEd2qyuAr/KBbZVxbMVrcm3lShXAaeDYndwJCuc1gJZBVleA93V+8tq6PReczFO7IClVQBQAQ6HjabADU2vztLoCvKmPlxyLOzx5QVKiAO1ChCmVaghze34RBUAJ8EUQ6zv3Tb0dmlZu/vpjSQH+Op6VtkJwfGD5HZUjuQSPDdS/mAKIILX9X3e3ohZIViunAOvqDKZu1QpEm7dXUwCYCBFacw0fyCwFAM6II1MA5ELm+ldVABiztr0okbXNECK+IfyxZuVJKVdXABixLkyFT5OLqC2vMkm4kpbXKUSvBM7PYV9yjEwppWYpspPuBkTxU0oT82QKRQwphle0t5fVXjGycQuNjyLVFbbel5wP5HiQeLVy2YTXfBQ+bQIUDMgVkQzy5ypmFdra3WSVQo0Apm5tFfrqK1++6lfnkWXIXZ+KbOGlqmxju22i0nI5bl1MgIKBTHqclJArbgpIqDfTVf5PRPTPWOYNCc2rbQ28XgF09liLk+ZbdYS2WSIYs7VMNnfUZSJjA2ETNa049/1TVt8WviL6Mz5914gFR1/MnPBPjkmarfj2R/KIZ38hynaIXKkfKaIiGgt5fIdvcmtSpPXlF5i2PpePGAoPoJk7HvdKOKGOiGguKGE05/FjZxxd27/5g2jVBcLK2fABt1ky81rjXMKTJoqUwBm4Zv/cwpMS4Gtaeox87oqC126ZSa7qFhuUn0wRe1hoTSyqFloDQIRFiYnSNXcatIKF4FTomy/Zays8Ich/J+iBUaEP+hgAAAAASUVORK5CYII=" alt="Логотип Цифрового Агронома"><div class="overline">Цифровой Агроном</div><h1>Журнал обращений</h1><p class="muted">Вход для сотрудников</p><div class="field"><label>Email</label><input type="email" id="email" required autocomplete="username"></div><div class="field"><label>Пароль</label><input type="password" id="password" required autocomplete="current-password"></div><button class="btn primary" id="loginButton" style="width:100%">Войти</button><p class="subtle" style="margin-top:12px">Учётные записи создаёт администратор проекта Supabase.</p><p id="loginError" class="error" style="margin-top:10px"></p></form></div>
@@ -17,7 +48,154 @@
 <section class="view" id="view-audit"><div class="card"><h2>Хронология изменений</h2><p class="subtle" style="margin-bottom:14px">Последние 200 действий. Данные фиксируются сервером.</p><div class="tablewrap"><table style="min-width:700px"><thead><tr><th>Время</th><th>Действие</th><th>Кто</th><th>Обращение</th></tr></thead><tbody id="auditRows"></tbody></table></div></div></section>
 <section class="view" id="view-data"><div class="card"><h2>Резервное копирование и перенос</h2><p class="muted">Данные хранятся в Supabase. Экспорт — дополнительная резервная копия, а не замена серверного резервирования.</p><div class="row" style="margin-top:20px"><button class="btn" id="exportJson">Скачать JSON</button><button class="btn" id="exportCsv">Скачать CSV</button><button class="btn primary" id="importButton">Импортировать JSON</button><input type="file" accept=".json,application/json" id="importFile" class="hidden"></div><p class="subtle" style="margin-top:14px">Импорт доступен только администратору. Импортированные записи получают владельцем администратора. Дубликаты по ID пропускаются.</p><p class="subtle" style="margin-top:10px">Для смены настроек проекта: <button class="link" id="resetConfig">Сбросить подключение</button></p></div></section>
 </main></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script>
+<script id="agro-unified-select-script">
+(function(){
+'use strict';
+var openState=null,serial=0,queued=false;
+var caret='<svg class="agro-select__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+function labelFor(select){
+ if(select.getAttribute('aria-label'))return select.getAttribute('aria-label');
+ var field=select.closest('.field'),lbl=field&&field.querySelector('label');
+ return lbl?lbl.textContent.trim():'Выберите значение';
+}
+function sync(select){
+ var wrap=select.parentElement;
+ if(!wrap||!wrap.classList.contains('agro-select'))return;
+ var trigger=wrap.querySelector('.agro-select__trigger'),value=trigger.querySelector('.agro-select__text');
+ var option=select.selectedOptions&&select.selectedOptions[0];
+ var title=option?option.textContent.trim():'Выберите значение';
+ if(value.textContent!==title)value.textContent=title;
+ trigger.disabled=!!select.disabled||!select.options.length;
+ wrap.classList.toggle('is-placeholder',!select.value);
+ if(openState&&openState.select===select&&trigger.disabled)closeMenu();
+}
+function refreshAll(){document.querySelectorAll('.agro-select>select').forEach(sync)}
+function decorate(select){
+ if(select.multiple||select.size>1||select.parentElement&&select.parentElement.classList.contains('agro-select'))return;
+ var wrap=document.createElement('span');wrap.className='agro-select';
+ var button=document.createElement('button');button.type='button';button.className='agro-select__trigger';
+ button.setAttribute('role','combobox');button.setAttribute('aria-haspopup','listbox');button.setAttribute('aria-expanded','false');
+ button.setAttribute('aria-label',labelFor(select));
+ button.innerHTML='<span class="agro-select__text"></span>'+caret;
+ select.parentNode.insertBefore(wrap,select);wrap.appendChild(select);wrap.appendChild(button);
+ select.setAttribute('tabindex','-1');select.setAttribute('aria-hidden','true');
+ button.addEventListener('click',function(){sync(select);if(openState&&openState.select===select)closeMenu();else showMenu(select,button)});
+ button.addEventListener('keydown',function(e){
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();if(!openState||openState.select!==select)showMenu(select,button);if(openState)moveActive(e.key==='ArrowDown'?1:-1)}
+  else if(e.key==='Escape'&&openState){e.preventDefault();closeMenu()}
+  else if((e.key==='Enter'||e.key===' ')&&openState&&openState.select===select){e.preventDefault();chooseActive()}
+ });
+ select.addEventListener('change',function(){sync(select)});
+ select.addEventListener('invalid',function(e){e.preventDefault();button.focus();showMenu(select,button)});
+ sync(select);
+}
+function scan(){document.querySelectorAll('select').forEach(decorate);refreshAll();if(openState&&!openState.select.isConnected)closeMenu()}
+function schedule(){if(queued)return;queued=true;queueMicrotask(function(){queued=false;scan()})}
+function closeMenu(focus){
+ if(!openState)return;
+ var state=openState;openState=null;
+ state.button.setAttribute('aria-expanded','false');state.button.removeAttribute('aria-controls');
+ if(state.select.parentElement)state.select.parentElement.classList.remove('is-open');
+ state.pop.remove();
+ if(focus&&state.button.isConnected)state.button.focus();
+}
+function activeItems(){return openState?openState.items.filter(function(el){return !el.disabled}):[]}
+function setActive(item){
+ if(!openState||!item)return;
+ openState.items.forEach(function(el){el.classList.toggle('is-active',el===item)});
+ openState.current=item;item.scrollIntoView({block:'nearest'});
+}
+function moveActive(step){
+ var items=activeItems();if(!items.length)return;
+ var current=openState.current,idx=items.indexOf(current);
+ setActive(items[(idx+step+items.length)%items.length]);
+}
+function chooseActive(){if(openState&&openState.current)choose(openState.current.dataset.index)}
+function choose(index){
+ if(!openState)return;
+ var select=openState.select,option=select.options[Number(index)];
+ if(!option||option.disabled||option.parentElement&&option.parentElement.disabled)return;
+ var value=option.value,button=openState.button;
+ closeMenu();select.value=value;sync(select);
+ select.dispatchEvent(new Event('input',{bubbles:true}));
+ select.dispatchEvent(new Event('change',{bubbles:true}));
+ if(button.isConnected)button.focus();
+}
+function draw(state,filter){
+ var q=(filter||'').toLocaleLowerCase('ru').trim(),frag=document.createDocumentFragment(),selected=null,first=null;
+ state.items=[];
+ Array.from(state.select.options).forEach(function(opt,i){
+  var name=opt.textContent.trim();if(q&&!name.toLocaleLowerCase('ru').includes(q))return;
+  var row=document.createElement('button');row.type='button';row.className='agro-select__item';
+  row.setAttribute('role','option');row.dataset.index=String(i);row.textContent=name||'—';
+  row.disabled=opt.disabled||!!(opt.parentElement&&opt.parentElement.disabled);
+  row.setAttribute('aria-selected',String(opt.selected));
+  if(opt.selected)selected=row;
+  if(!row.disabled&&!first)first=row;
+  state.items.push(row);frag.appendChild(row);
+ });
+ state.list.replaceChildren(frag);
+ if(!state.items.length){var empty=document.createElement('div');empty.className='agro-select__none';empty.textContent='Ничего не найдено';state.list.appendChild(empty)}
+ var next=selected&&!selected.disabled?selected:first;
+ state.current=null;
+ if(next)setActive(next);
+}
+function positionMenu(){
+ if(!openState)return;
+ var s=openState,r=s.button.getBoundingClientRect();
+ var width=Math.min(Math.max(r.width,200),window.innerWidth-20);
+ var left=Math.max(10,Math.min(r.left,window.innerWidth-width-10));
+ var below=window.innerHeight-r.bottom-10,above=r.top-10;
+ var desired=Math.min(320,15+s.items.length*39+(s.search?54:0));
+ var upwards=below<Math.min(235,desired)&&above>below;
+ var room=Math.max(95,upwards?above:below);
+ s.pop.style.width=width+'px';s.pop.style.left=left+'px';s.pop.style.maxHeight=Math.min(340,room)+'px';
+ s.list.style.maxHeight=Math.max(65,Math.min(268,room-(s.search?68:16)))+'px';
+ s.pop.style.top=(upwards?Math.max(8,r.top-s.pop.getBoundingClientRect().height-6):Math.min(window.innerHeight-65,r.bottom+6))+'px';
+}
+function showMenu(select,button){
+ if(select.disabled||!select.options.length)return;
+ closeMenu();var pop=document.createElement('div');pop.className='agro-select__popover';
+ var list=document.createElement('div');list.className='agro-select__items';list.id='agro-select-list-'+(++serial);list.setAttribute('role','listbox');
+ var search=null;
+ if(select.options.length>9){
+  var searchBox=document.createElement('div');searchBox.className='agro-select__search-wrap';
+  search=document.createElement('input');search.type='search';search.className='agro-select__search';
+  search.placeholder='Поиск по списку…';search.setAttribute('aria-label','Поиск по вариантам');
+  searchBox.appendChild(search);pop.appendChild(searchBox);
+ }
+ pop.appendChild(list);document.body.appendChild(pop);
+ var state={select:select,button:button,pop:pop,list:list,search:search,items:[],current:null};
+ openState=state;
+ select.parentElement.classList.add('is-open');
+ button.setAttribute('aria-expanded','true');button.setAttribute('aria-controls',list.id);
+ draw(state,'');positionMenu();
+ pop.addEventListener('click',function(e){var option=e.target.closest('[data-index]');if(option&&!option.disabled)choose(option.dataset.index)});
+ pop.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){e.preventDefault();closeMenu(true)}
+  else if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();moveActive(e.key==='ArrowDown'?1:-1)}
+  else if(e.key==='Enter'&&openState&&openState.current){e.preventDefault();chooseActive()}
+ });
+ if(search){search.addEventListener('input',function(){if(openState===state){draw(state,search.value);positionMenu()}});search.focus({preventScroll:true})}
+}
+document.addEventListener('pointerdown',function(e){if(openState&&!openState.pop.contains(e.target)&&!openState.button.contains(e.target))closeMenu()});
+document.addEventListener('focusin',function(e){if(openState&&!openState.pop.contains(e.target)&&!openState.button.contains(e.target))closeMenu()});
+document.addEventListener('reset',function(){requestAnimationFrame(refreshAll)},true);
+document.addEventListener('click',function(){requestAnimationFrame(refreshAll)},true);
+window.addEventListener('resize',positionMenu);
+window.addEventListener('scroll',positionMenu,true);
+var observer=new MutationObserver(function(records){
+ var relevant=records.some(function(m){
+  if(m.type==='attributes')return m.target.matches&&m.target.matches('select,option,optgroup');
+  if(m.target.matches&&m.target.matches('select,optgroup'))return true;
+  return Array.from(m.addedNodes).some(function(n){return n.nodeType===1&&(n.matches('select')||n.querySelector&&n.querySelector('select'))});
+ });
+ if(relevant)schedule();
+});
+observer.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['disabled','selected','class']});
+scan();
+})();
+</script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script>
 'use strict';const $=id=>document.getElementById(id);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const nowDate=()=>new Date().toLocaleDateString('en-CA');const currentMonth=()=>nowDate().slice(0,7);const fields=['tk','master','greenhouse','incident_date','category','status','request','resolution'];let client=null,user=null,profile=null,rows=[],profiles={},events=[],channel=null,editingStamp=null,loading=false;const configKey='ca-cloud-connection-v1';const config=()=>{try{return JSON.parse(localStorage.getItem(configKey)||'null')}catch{return null}};function toast(message){const t=document.createElement('div');t.className='toast';t.textContent=message;document.body.append(t);setTimeout(()=>t.remove(),4000)}function screen(id){['setup','login','app'].forEach(x=>$(x).classList.toggle('hidden',x!==id))}function errorText(e){return e?.message||String(e)}function monthBefore(m){let [y,n]=m.split('-').map(Number);return new Date(y,n-2,1).toISOString().slice(0,7)}function initialize(){let c=config();if(!c){screen('setup');return}if(!window.supabase){screen('setup');toast('Не удалось загрузить библиотеку Supabase. Проверьте интернет.');return}try{client=window.supabase.createClient(c.url,c.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});client.auth.onAuthStateChange((event,session)=>{if(event==='SIGNED_OUT'){user=null;screen('login')} });client.auth.getUser().then(async({data,error})=>{if(error||!data.user){screen('login');return}user=data.user;await enterApp()})}catch(e){screen('setup');toast(errorText(e))}}$('saveConfig').onclick=()=>{let url=$('projectUrl').value.trim().replace(/\/$/,'');let key=$('publicKey').value.trim();if(!/^https:\/\/[\w-]+\.supabase\.co$/.test(url)||!key||/service_role|sb_secret_/i.test(key)){alert('Введите URL вида https://PROJECT.supabase.co и только публичный ключ.');return}localStorage.setItem(configKey,JSON.stringify({url,key}));location.reload()};$('loginForm').onsubmit=async e=>{e.preventDefault();$('loginError').textContent='';$('loginButton').disabled=true;try{let {data,error}=await client.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error)throw error;user=data.user;await enterApp()}catch(err){$('loginError').textContent='Не удалось войти: '+errorText(err)}finally{$('loginButton').disabled=false}};$('logout').onclick=async()=>{if(channel){await client.removeChannel(channel);channel=null}await client.auth.signOut();screen('login')};$('resetConfig').onclick=()=>{if(confirm('Сбросить адрес и публичный ключ Supabase на этом устройстве? Данные в облаке останутся.')){localStorage.removeItem(configKey);location.reload()}};
 async function enterApp(){let {data:p,error:pe}=await client.from('profiles').select('id,display_name,role');if(pe)throw pe;profiles=Object.fromEntries((p||[]).map(x=>[x.id,x]));profile=profiles[user.id];if(!profile)throw Error('Профиль не найден. Запустите schema.sql в Supabase SQL Editor.');$('who').textContent=profile.display_name||user.email;$('role').textContent=profile.role==='admin'?'Администратор':'Специалист';$('importButton').disabled=profile.role!=='admin';screen('app');$('month').value=currentMonth();resetForm();await loadAll();await subscribe();navigate('dashboard')}
 async function fetchAll(table,orderCol){let output=[],from=0,limit=1000;while(true){let {data,error}=await client.from(table).select('*').order(orderCol,{ascending:false}).range(from,from+limit-1);if(error)throw error;output.push(...data);if(data.length<limit)break;from+=limit;if(from>50000)throw Error('Слишком много записей: нужен серверный постраничный режим')}return output}async function loadAll(){if(loading)return;loading=true;try{rows=await fetchAll('cases','created_at');let {data,error}=await client.from('profiles').select('id,display_name,role');if(error)throw error;profiles=Object.fromEntries((data||[]).map(x=>[x.id,x]));renderAll();$('liveText').textContent='Данные актуальны'}catch(e){$('banner').textContent='Ошибка загрузки: '+errorText(e);$('banner').classList.remove('hidden');$('liveText').textContent='Ошибка подключения'}finally{loading=false}}async function subscribe(){if(channel)await client.removeChannel(channel);channel=client.channel('cases-shared-'+Date.now()).on('postgres_changes',{event:'*',schema:'public',table:'cases'},()=>{loadAll()}).subscribe(status=>{$('liveText').textContent=status==='SUBSCRIBED'?'Синхронизация активна':status==='CHANNEL_ERROR'?'Нет соединения':'Подключение...';$('liveDot').style.background=status==='SUBSCRIBED'?'#20a46a':'#e4a340'});document.addEventListener('visibilitychange',()=>{if(!document.hidden&&user)loadAll()})}

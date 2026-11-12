@@ -293,7 +293,10 @@ function activeItems(){return openState?openState.items.filter(function(el){retu
 function setActive(item){
  if(!openState||!item)return;
  openState.items.forEach(function(el){el.classList.toggle('is-active',el===item)});
- openState.current=item;item.scrollIntoView({block:'nearest'});
+ openState.current=item;
+ var list=item.parentElement,rect=item.getBoundingClientRect(),box=list.getBoundingClientRect();
+ if(rect.top<box.top)list.scrollTop-=box.top-rect.top;
+ else if(rect.bottom>box.bottom)list.scrollTop+=rect.bottom-box.bottom;
 }
 function moveActive(step){
  var items=activeItems();if(!items.length)return;

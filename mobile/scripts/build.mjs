@@ -48,7 +48,14 @@ if (!withViewport.includes(sdkCdn)) throw new Error('Не найдена биб�
 const withLocalSdk = withViewport.replace(sdkCdn, '<script src="./supabase-sdk.js"></script>');
 const afterHead = withLocalSdk.replace('</head>', mobileHead + '</head>');
 const lastBody = afterHead.lastIndexOf('</body>');
-const additions = '<script src="./mobile-ui.js" defer></script>' +
+// Read the same authenticated session as the existing CRM without creating
+// a second Supabase client or exposing any server-side key.
+const mobileAuthContext = '<script>window.DigitalAgronomMobileContext={' +
+  'getClient:()=>typeof client!=="undefined"?client:null,' +
+  'getUser:()=>typeof user!=="undefined"?user:null,' +
+  'openOverdue:(kind,id)=>typeof openOverdueRecord==="function"?openOverdueRecord(kind,id):null' +
+  '};</script>';
+const additions = mobileAuthContext + '<script src="./mobile-ui.js" defer></script>' +
   '<script src="./native-bridge.js" defer></script>';
 const appHtml = afterHead.slice(0, lastBody) + additions + afterHead.slice(lastBody);
 await writeFile(join(webDir, 'index.html'), appHtml);

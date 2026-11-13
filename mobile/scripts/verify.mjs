@@ -23,6 +23,16 @@ assert.ok(html.includes('src="./supabase-sdk.js"') && !html.includes('cdn.jsdeli
 assert.ok(html.includes('mobile.css') && html.includes('mobile-ui.js') && html.includes('native-bridge.js'));
 assert.ok(css.includes('.mobile-bottom-nav') && css.includes('.mobile-more-drawer'));
 assert.ok(ui.includes('DigitalAgronomMobileUI'));
+assert.ok(ui.includes('mobilePushEnable') && ui.includes('mobilePushDisable'), 'Нет элементов настройки push в мобильном меню');
+assert.ok(html.includes('DigitalAgronomMobileContext'), 'Отсутствует мост к авторизованной сессии CRM');
+assert.ok(css.includes('.mobile-push-settings'), 'Нет мобильного оформления push');
+const pushCode = await readFile(join(root, 'src', 'push.js'), 'utf8');
+assert.ok(pushCode.includes('@capacitor/push-notifications'), 'Не подключён нативный плагин уведомлений');
+assert.ok(pushCode.includes('crm-push-device'), 'Отсутствует регистрация устройства в Supabase');
+assert.ok(pushCode.includes('pushNotificationActionPerformed'), 'Отсутствует обработка нажатий на push');
+new Function(pushCode.replace(/^import[^\n]*$/gm, '').replace('export function installPush()', 'function installPush()'));
+const deps = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
+assert.ok(deps.dependencies['@capacitor/push-notifications'], 'Push-плагин не указан в пакетах приложения');
 assert.ok(css.includes('#app.shell{display:block!important;height:auto!important;min-height:100dvh!important'), 'В мобильном приложении запрещена фиксированная высота контейнера CRM');
 assert.ok(css.includes('overflow:visible!important;touch-action:auto!important;overscroll-behavior-y:auto'), 'Главный экран должен использовать прокрутку документа');
 assert.ok(ui.includes('document.scrollingElement.scrollTop = 0'), 'Навигация должна сбрасывать прокрутку документа');

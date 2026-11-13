@@ -82,6 +82,37 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent}
     min-width:0!important;
     width:100%!important;
   }
+  #view-tasks #taskFilterTrigger,
+  #view-tasks #taskDateFilterTrigger{
+    width:100%;
+    min-width:0!important;
+    max-width:100%;
+    min-height:46px;
+    padding:10px 10px!important;
+    gap:6px;
+    font-size:12px;
+  }
+  #view-tasks #taskFilterLabel,
+  #view-tasks #taskDateFilterLabel{
+    flex:1 1 auto;
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  #view-tasks #taskFilterTrigger svg,
+  #view-tasks #taskDateFilterTrigger .case-date-icon{
+    flex:0 0 auto;
+  }
+  #view-tasks #taskFilterMenu{
+    width:min(250px,calc(100vw - 55px));
+    min-width:0!important;
+    max-width:calc(100vw - 55px);
+    max-height:45dvh;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    z-index:110;
+  }
   #view-tasks #taskAssigneeWrap{
     grid-column:1/-1;
     grid-row:3;

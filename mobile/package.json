@@ -1,0 +1,32 @@
+{
+  "name": "digital-agronom-mobile",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Мобильное приложение CRM «Цифровой Агроном» для Android и iOS",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "verify": "node scripts/verify.mjs",
+    "android:init": "npm run build && npx cap add android && npx cap sync android",
+    "ios:init": "npm run build && npx cap add ios && npx cap sync ios",
+    "sync": "npm run build && npx cap sync",
+    "android:open": "npm run sync && npx cap open android",
+    "ios:open": "npm run sync && npx cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/core": "8.6.2",
+    "@capacitor/app": "8.1.2",
+    "@capacitor/browser": "8.0.3",
+    "@capacitor/filesystem": "8.1.5",
+    "@capacitor/share": "8.0.3",
+    "jspdf": "3.0.4",
+    "html2canvas": "1.4.1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.6.2",
+    "@capacitor/android": "8.6.2",
+    "@capacitor/ios": "8.6.2",
+    "esbuild": "0.25.12",
+    "sharp": "0.34.5"
+  }
+}

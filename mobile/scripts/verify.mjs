@@ -19,11 +19,13 @@ for (const name of ['dashboard', 'new', 'history', 'plan', 'calendar', 'tasks', 
 for (const id of ['loginForm','caseForm','taskForm','caseReportPdf','taskReportPdf','overdueBell','pageTitle']) {
   assert.ok(html.includes('id="' + id + '"'), 'Не найдена функция CRM: ' + id);
 }
-assert.ok(html.includes('supabase.min.js'), 'Supabase SDK не подключён');
+assert.ok(html.includes('src="./supabase-sdk.js"') && !html.includes('cdn.jsdelivr.net/npm/@supabase/supabase-js'), 'Supabase SDK должен быть локальным');
 assert.ok(html.includes('mobile.css') && html.includes('mobile-ui.js') && html.includes('native-bridge.js'));
 assert.ok(css.includes('.mobile-bottom-nav') && css.includes('.mobile-more-drawer'));
 assert.ok(ui.includes('DigitalAgronomMobileUI'));
 assert.ok(native.length > 10000, 'Нативный слой не собран: ожидается пакет Capacitor и PDF');
+const sdk = await readFile(join(www, 'supabase-sdk.js'), 'utf8');
+assert.ok(sdk.length > 10000, 'Локальный Supabase SDK не собран');
 assert.equal(JSON.parse(manifest).display, 'standalone');
 for (const name of ['icon-192.png', 'icon-512.png']) {
   const { size } = await stat(join(www, 'icons', name));

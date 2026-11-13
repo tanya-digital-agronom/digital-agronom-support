@@ -6,6 +6,7 @@ import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
+import { installPush } from './push.js';
 
 const native = Capacitor.isNativePlatform();
 window.DigitalAgronomNative = { platform: Capacitor.getPlatform(), isNative: native };
@@ -171,5 +172,6 @@ function installBridge() {
   // Existing CRM assigns its handlers synchronously; this module runs after it.
   interceptDataExports();
   interceptNewWindows();
+  installPush();
   void initAppLifecycle().catch(error => console.warn('Native lifecycle:', error));
 }

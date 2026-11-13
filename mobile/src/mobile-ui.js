@@ -85,6 +85,11 @@
       '<div class="mobile-more-heading"><div><strong>Все разделы</strong><small>Цифровой Агроном · CRM</small></div>' +
       '<button type="button" class="mobile-more-close" aria-label="Закрыть меню">×</button></div>' +
       '<div class="mobile-more-list"></div>' +
+      '<div class="mobile-push-settings">' +
+      '<div class="mobile-push-heading"><span>Уведомления на телефон</span><small>Просроченные задачи и обращения</small></div>' +
+      '<p id="mobilePushStatus" role="status">Подключение…</p>' +
+      '<div class="mobile-push-actions"><button type="button" id="mobilePushEnable">Включить уведомления</button>' +
+      '<button type="button" id="mobilePushDisable" hidden>Отключить уведомления</button></div></div>' +
       '<div class="mobile-more-profile"><div class="mobile-more-user"><span></span><small></small></div>' +
       '<button type="button" class="mobile-logout">Выйти</button></div>';
     app.append(backdrop, drawer);
@@ -133,6 +138,7 @@
       const initial = ($('who')?.textContent?.trim() || 'ЦА').slice(0, 1).toLocaleUpperCase('ru-RU');
       avatar.textContent = initial;
       updateTabs();
+      window.DigitalAgronomNative?.push?.refreshControls?.();
     }
 
     function openMore() {
@@ -164,11 +170,22 @@
       return false;
     }
 
+    drawer.querySelector('#mobilePushEnable').addEventListener('click', () => {
+      void window.DigitalAgronomNative?.push?.enable?.();
+    });
+    drawer.querySelector('#mobilePushDisable').addEventListener('click', () => {
+      void window.DigitalAgronomNative?.push?.disable?.();
+    });
     more.addEventListener('click', () => drawer.hidden ? openMore() : closeMore());
     avatar.addEventListener('click', openMore);
     backdrop.addEventListener('click', closeMore);
     drawer.querySelector('.mobile-more-close').addEventListener('click', closeMore);
-    drawer.querySelector('.mobile-logout').addEventListener('click', () => { closeMore(); $('logout')?.click(); });
+    drawer.querySelector('.mobile-logout').addEventListener('click', async () => {
+      const button = drawer.querySelector('.mobile-logout');
+      button.disabled = true;
+      try { await window.DigitalAgronomNative?.push?.logout?.(); }
+      finally { button.disabled = false; closeMore(); $('logout')?.click(); }
+    });
     document.addEventListener('keydown', event => { if (event.key === 'Escape' && !drawer.hidden) closeMore(); });
     const activeObserver = new MutationObserver(() => updateTabs());
     sidebar.querySelectorAll('.nav[data-nav]').forEach(button => activeObserver.observe(button, { attributes: true, attributeFilter: ['class'] }));

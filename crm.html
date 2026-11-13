@@ -634,4 +634,125 @@ $('taskReportPdf').onclick=()=>createPeriodReport('task');
 window.addEventListener('error',e=>{console.error('Ошибка CRM:',e.error||e.message);if($('app').classList.contains('hidden')){screen('login');toast('Ошибка загрузки CRM. Попробуйте обновить страницу.')}});
 window.addEventListener('unhandledrejection',e=>{console.error('Ошибка запроса CRM:',e.reason);if($('app').classList.contains('hidden'))screen('login')});
 initialize();
+</script>
+<script id="training-materials-script">
+'use strict';
+const materialBucket='training-materials';
+const materialAllowed=new Set(['pdf','html','htm','zip','ppt','pptx']);
+const materialLimit=25*1024*1024;
+let trainingMaterials=[],trainingLoading=false,trainingUploading=false;
+function materialExt(name){return String(name||'').split('.').pop().toLowerCase()}
+function materialMime(ext){
+ return ({pdf:'application/pdf',html:'text/html',htm:'text/html',zip:'application/zip',ppt:'application/vnd.ms-powerpoint',pptx:'application/vnd.openxmlformats-officedocument.presentationml.presentation'})[ext]||'application/octet-stream';
+}
+function materialKind(ext){return ext==='htm'||ext==='html'?'html':ext==='ppt'||ext==='pptx'?'ppt':ext}
+function materialSize(bytes){return bytes>=1048576?(bytes/1048576).toFixed(1)+' МБ':Math.max(1,Math.round(bytes/1024))+' КБ'}
+function materialCanUpload(){return ['admin','support'].includes(profile?.role)}
+function materialCanRemove(row){return profile?.role==='admin'||(profile?.role==='support'&&row.uploader_id===user?.id)}
+function materialFeedback(message,type){
+ const el=$('materialsUploadFeedback');el.textContent=message||'';
+ el.classList.toggle('is-error',type==='error');el.classList.toggle('is-success',type==='success');
+}
+function selectedTrainingFiles(){
+ const files=Array.from($('materialsFiles').files||[]);
+ $('materialsFilesCount').textContent=files.length?files.length+' '+(files.length===1?'файл':files.length<5?'файла':'файлов'):'Файлы не выбраны';
+ $('materialsSelectedFiles').textContent=files.map(f=>f.name+' ('+materialSize(f.size)+')').join(' · ');
+ $('materialsUploadButton').disabled=trainingUploading||!files.length;
+}
+function renderTrainingMaterials(){
+ $('materialsUploadPanel').classList.toggle('hidden',!materialCanUpload());
+ const needle=$('materialsSearch').value.trim().toLocaleLowerCase('ru'),fmt=$('materialsFormat').value;
+ const filtered=trainingMaterials.filter(r=>{
+  const type=materialKind(r.file_type);
+  const author=profiles[r.uploader_id]?.display_name||profiles[r.uploader_id]?.email||'';
+  return (!fmt||type===fmt)&&(!needle||(r.file_name+' '+author).toLocaleLowerCase('ru').includes(needle));
+ });
+ $('materialsCount').textContent=trainingMaterials.length;
+ const root=$('materialsRows');
+ if(!filtered.length){
+  root.innerHTML='<div class="material-empty">'+(trainingMaterials.length?'По заданным параметрам материалы не найдены':'Здесь пока нет материалов. Добавьте первый файл для команды.')+'</div>';
+  return;
+ }
+ root.innerHTML=filtered.map(r=>{
+  const type=materialKind(r.file_type),shown=(type==='ppt'?'PPT':type.toUpperCase());
+  const author=profiles[r.uploader_id]?.display_name?.trim()||profiles[r.uploader_id]?.email||'Сотрудник';
+  const date=new Date(r.created_at).toLocaleDateString('ru-RU',{day:'2-digit',month:'short',year:'numeric'});
+  return '<article class="material-item"><span class="material-icon '+esc(type)+'" aria-hidden="true">'+esc(shown)+'</span>'+
+   '<div class="material-item-body"><div class="material-name">'+esc(r.file_name)+'</div><div class="material-detail">'+esc(materialSize(r.file_size))+' · '+esc(date)+' · '+esc(author)+'</div></div>'+
+   '<div class="material-actions"><button type="button" class="material-download" data-material-download="'+esc(r.id)+'">Скачать</button>'+
+   (materialCanRemove(r)?'<button type="button" class="material-remove" data-material-delete="'+esc(r.id)+'" title="Удалить материал" aria-label="Удалить '+esc(r.file_name)+'">×</button>':'')+'</div></article>';
+ }).join('');
+}
+async function loadTrainingMaterials(){
+ if(!client||!user||trainingLoading)return;
+ trainingLoading=true;$('materialsRefresh').disabled=true;
+ try {
+  const {data,error}=await client.from('training_materials').select('id,uploader_id,storage_path,file_name,file_size,file_type,created_at').order('created_at',{ascending:false});
+  if(error)throw error;
+  trainingMaterials=data||[];renderTrainingMaterials();
+ } catch(e){
+  $('materialsRows').innerHTML='<div class="material-empty">Ошибка загрузки материалов: '+esc(errorText(e))+'</div>';
+ } finally {trainingLoading=false;$('materialsRefresh').disabled=false}
+}
+async function downloadTrainingMaterial(id){
+ const row=trainingMaterials.find(r=>r.id===id);if(!row)return;
+ const button=$('materialsRows').querySelector('[data-material-download="'+id+'"]');
+ if(button){button.disabled=true;button.textContent='Скачивание…'}
+ try{
+  const {data,error}=await client.storage.from(materialBucket).download(row.storage_path);
+  if(error)throw error;
+  const url=URL.createObjectURL(data);
+  const anchor=document.createElement('a');anchor.href=url;anchor.download=row.file_name;document.body.appendChild(anchor);anchor.click();anchor.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),60000);
+ }catch(e){alert('Не удалось скачать файл: '+errorText(e))}
+ finally{if(button?.isConnected){button.disabled=false;button.textContent='Скачать'}}
+}
+async function deleteTrainingMaterial(id){
+ const row=trainingMaterials.find(r=>r.id===id);if(!row||!materialCanRemove(row))return;
+ if(!confirm('Удалить материал «'+row.file_name+'» из общей библиотеки?'))return;
+ const button=$('materialsRows').querySelector('[data-material-delete="'+id+'"]');if(button)button.disabled=true;
+ try {
+  const {error:storageError}=await client.storage.from(materialBucket).remove([row.storage_path]);
+  if(storageError)throw storageError;
+  const {error:metaError}=await client.from('training_materials').delete().eq('id',id);
+  if(metaError)throw metaError;
+  toast('Материал удалён');await loadTrainingMaterials();
+ }catch(e){alert('Не удалось удалить материал: '+errorText(e));if(button?.isConnected)button.disabled=false}
+}
+$('materialsUploadForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ if(!materialCanUpload()||trainingUploading)return;
+ const files=Array.from($('materialsFiles').files||[]);
+ if(!files.length)return;
+ if(files.length>10){materialFeedback('За один раз можно загрузить не более 10 файлов.','error');return}
+ const invalid=files.find(f=>!materialAllowed.has(materialExt(f.name))||!f.size||f.size>materialLimit||f.name.length>250);
+ if(invalid){materialFeedback('Недопустимый формат или размер (максимум 25 МБ): '+invalid.name,'error');return}
+ trainingUploading=true;selectedTrainingFiles();materialFeedback('Загружаем '+files.length+' файл(ов)…');
+ let uploaded=0,issue='';
+ try{
+  for(const f of files){
+   const ext=materialExt(f.name),path=user.id+'/'+crypto.randomUUID()+'.'+ext;
+   const {error:uploadError}=await client.storage.from(materialBucket).upload(path,f,{contentType:materialMime(ext),upsert:false});
+   if(uploadError){issue=f.name+': '+errorText(uploadError);break}
+   const {error:metaError}=await client.from('training_materials').insert({uploader_id:user.id,storage_path:path,file_name:f.name,file_size:f.size,file_type:ext});
+   if(metaError){await client.storage.from(materialBucket).remove([path]);issue=f.name+': '+errorText(metaError);break}
+   uploaded++;
+   materialFeedback('Загружено '+uploaded+' из '+files.length+'…');
+  }
+  if(uploaded){$('materialsUploadForm').reset();toast('Материалы добавлены: '+uploaded)}
+  materialFeedback(issue?'Загружено: '+uploaded+'. Ошибка: '+issue:'Успешно загружено: '+uploaded,issue?'error':'success');
+  await loadTrainingMaterials();
+ }catch(e){materialFeedback('Ошибка загрузки: '+errorText(e),'error')}
+ finally{trainingUploading=false;selectedTrainingFiles()}
+});
+$('materialsFiles').addEventListener('change',()=>{selectedTrainingFiles();materialFeedback('')});
+$('materialsUploadForm').querySelector('label[for="materialsFiles"]').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('materialsFiles').click()}});
+$('materialsSearch').addEventListener('input',renderTrainingMaterials);
+$('materialsFormat').addEventListener('input',renderTrainingMaterials);
+$('materialsRefresh').addEventListener('click',loadTrainingMaterials);
+$('materialsRows').addEventListener('click',e=>{
+ const button=e.target.closest('[data-material-download],[data-material-delete]');if(!button)return;
+ if(button.dataset.materialDownload)downloadTrainingMaterial(button.dataset.materialDownload);
+ else if(button.dataset.materialDelete)deleteTrainingMaterial(button.dataset.materialDelete);
+});
 </script></body></html>

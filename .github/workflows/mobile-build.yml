@@ -2,6 +2,10 @@ name: Build mobile preview (Android + iOS)
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - 'mobile/**'
+      - '.github/workflows/mobile-build.yml'
 
 permissions:
   contents: read

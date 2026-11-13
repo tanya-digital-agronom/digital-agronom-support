@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "11022914828",
+    "project_id": "agronom-ec8b7",
+    "storage_bucket": "agronom-ec8b7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:11022914828:android:1856f7fc20c75f8ce32529",
+        "android_client_info": {
+          "package_name": "ru.digitalagronom.support"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_j5wcnhYMKY5NrTY-op-h2JRHLNCCeeA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

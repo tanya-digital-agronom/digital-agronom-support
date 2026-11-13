@@ -151,22 +151,19 @@ function uniqueAlerts(rows: Alert[]): Alert[] {
     seen.add(key); return true;
   });
 }
-function unauthorized(req: Request): boolean {
-  const secret = env("CRM_PUSH_CRON_SECRET");
-  const input = req.headers.get("x-crm-push-secret") || "";
-  if (secret.length < 32 || input.length !== secret.length) return true;
-  let mismatch = 0;
-  for (let i = 0; i < secret.length; i++) mismatch |= secret.charCodeAt(i) ^ input.charCodeAt(i);
-  return mismatch !== 0;
-}
 Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return answer({ error: "Method not allowed" }, 405);
-  // This endpoint is NOT public and cannot be called with a user's JWT or anon key.
-  if (!env("CRM_PUSH_CRON_SECRET")) return answer({ error: "Push schedule is not configured" }, 503);
-  if (unauthorized(req)) return answer({ error: "Unauthorized" }, 401);
+  // Only the scheduled request containing a random 256-bit Vault token is allowed.
+  // Validation occurs in a service_role-only RPC. The token never lives in app code
+  // or GitHub and is never returned to callers.
+  const header = req.headers.get("x-crm-push-secret") || "";
+  if (header.length < 32 || header.length > 128) return answer({ error: "Unauthorized" }, 401);
   const url = env("SUPABASE_URL"), serviceKey = env("SUPABASE_SERVICE_ROLE_KEY");
   if (!url || !serviceKey) return answer({ error: "Server missing Supabase credentials" }, 503);
   const db = createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } });
+  const { data: permitted, error: verifyError } = await db.rpc("crm_push_verify_cron", { p_provided: header });
+  if (verifyError) return answer({ error: "Push authorization unavailable" }, 503);
+  if (permitted !== true) return answer({ error: "Unauthorized" }, 401);
 
   let firebaseAccount: ServiceAccount | null = null;
   try {

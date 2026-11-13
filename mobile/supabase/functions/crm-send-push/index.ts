@@ -2,7 +2,7 @@ import { createClient } from "npm:@supabase/supabase-js@2.119.0";
 
 type Platform = "android" | "ios";
 type PushDevice = { id: string; user_id: string; device_token: string; platform: Platform };
-type Alert = { user_id: string; kind: "task" | "case"; source_id: string; title: string; body: string };
+type Alert = { user_id: string; kind: "task" | "case" | "test"; source_id: string; title: string; body: string };
 type ServiceAccount = { project_id: string; client_email: string; private_key: string };
 const env = (key: string) => Deno.env.get(key) || "";
 const headers = { "Content-Type": "application/json; charset=utf-8" };
@@ -177,6 +177,34 @@ Deno.serve(async (req: Request) => {
   const hasApple = ["APNS_PRIVATE_KEY","APNS_TEAM_ID","APNS_KEY_ID","APNS_BUNDLE_ID"].every(k => !!env(k));
   if (!firebaseAccount && !hasApple) {
     return answer({ error: "Configure Firebase or Apple push credentials before scheduling" }, 503);
+  }
+  // A single diagnostic message, accessible ONLY with the protected cron
+  // secret. Never writes fictitious tasks or cases into the CRM database.
+  const body = await req.json().catch(() => ({}));
+  if (body?.test === true) {
+    if (!firebaseAccount) return answer({ error: "Firebase is not configured" }, 503);
+    const { data: testDevices, error: deviceError } = await db.from("crm_push_devices")
+      .select("id,user_id,device_token,platform").eq("active", true).eq("platform", "android")
+      .order("last_seen_at", { ascending: false }).limit(1);
+    if (deviceError) return answer({ error: "Cannot retrieve test device" }, 500);
+    const device = (testDevices || [])[0] as PushDevice | undefined;
+    if (!device) return answer({ error: "No active Android devices" }, 409);
+    try {
+      const delivery = await deliver(device, {
+        kind: "test", user_id: device.user_id, source_id: crypto.randomUUID(),
+        title: "Цифровой Агроном · тест 🔔",
+        body: "Это проверочное push-уведомление. Отправка с сервера настроена.",
+      }, firebaseAccount);
+      if (delivery.expired) {
+        await db.from("crm_push_devices").update({ active: false }).eq("id", device.id);
+      }
+      return answer({
+        test: true, platform: "android", accepted: delivery.ok,
+        code: delivery.code, note: "Accepted means FCM accepted the message, not that it was displayed.",
+      }, delivery.ok ? 200 : 502);
+    } catch {
+      return answer({ test: true, accepted: false, code: "transport_error" }, 502);
+    }
   }
   const today = localDay(), threshold = dateMinusDays(today, 3);
   const { data: admins, error: roleError } = await db.from("profiles").select("id").eq("role", "admin");

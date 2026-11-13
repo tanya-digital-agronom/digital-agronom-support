@@ -8,8 +8,8 @@
     "build": "node scripts/build.mjs",
     "verify": "node scripts/verify.mjs",
     "android:init": "npm run build && npx cap add android && npx cap sync android",
-    "ios:init": "npm run build && npx cap add ios && npx cap sync ios",
-    "sync": "npm run build && npx cap sync",
+    "ios:init": "npm run build && npx cap add ios && npx cap sync ios && node scripts/configure-ios-push.mjs",
+    "sync": "npm run build && npx cap sync && node scripts/configure-ios-push.mjs",
     "android:open": "npm run sync && npx cap open android",
     "ios:open": "npm run sync && npx cap open ios"
   },

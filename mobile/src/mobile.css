@@ -228,6 +228,15 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent}
   .mobile-more-item{min-width:0;min-height:72px;text-align:left;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:7px;padding:11px;border:1px solid #edf0ed;border-radius:12px;background:#fafbfa;color:#46574d;font:inherit;font-size:11px;font-weight:700;overflow-wrap:anywhere}
   .mobile-more-item.is-active{background:#fff2e6;border-color:#f5dbc2;color:#b8692a}
   .mobile-more-item svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .mobile-push-settings{margin-top:12px;padding:14px 12px;border-radius:13px;background:#fff8f1;border:1px solid #f5e3d1}
+  .mobile-push-heading{display:flex;flex-direction:column;gap:3px;font-size:12px;font-weight:750;color:#334449}
+  .mobile-push-heading small{font-size:10px;color:#8e785f;font-weight:500;line-height:1.4}
+  #mobilePushStatus{margin:9px 0;color:#6a7881;font-size:11px;line-height:1.45;overflow-wrap:anywhere}
+  .mobile-push-actions{display:flex;gap:9px;flex-wrap:wrap}
+  .mobile-push-actions button{min-height:40px;padding:9px 13px;border-radius:10px;background:#e88737;color:#fff;border:1px solid #e88737;font:inherit;font-size:11px;font-weight:700;cursor:pointer}
+  .mobile-push-actions #mobilePushDisable{background:#fff;color:#a85f38;border-color:#f0d0b5}
+  .mobile-push-actions button[hidden]{display:none!important}
+  .mobile-push-actions button:disabled{opacity:.5;cursor:wait}
   .mobile-more-profile{display:flex;gap:8px;align-items:center;padding:14px 4px 0;margin-top:13px;border-top:1px solid #ecf0ec;justify-content:space-between}
   .mobile-more-user{min-width:0;display:flex;flex-direction:column;font-size:11px;font-weight:700;overflow-wrap:anywhere}
   .mobile-more-user small{color:#87948b;font-weight:500;font-size:10px}

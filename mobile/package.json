@@ -16,17 +16,19 @@
   "dependencies": {
     "@capacitor/core": "8.6.2",
     "@capacitor/app": "8.1.2",
-    "@capacitor/browser": "8.0.3",
+    "@capacitor/browser": "8.0.5",
     "@capacitor/filesystem": "8.1.5",
     "@capacitor/share": "8.0.3",
     "jspdf": "3.0.4",
-    "html2canvas": "1.4.1"
+    "html2canvas": "1.4.1",
+    "canvg": "4.0.3",
+    "dompurify": "3.2.6"
   },
   "devDependencies": {
     "@capacitor/cli": "8.6.2",
     "@capacitor/android": "8.6.2",
     "@capacitor/ios": "8.6.2",
-    "esbuild": "0.25.12",
+    "esbuild": "0.28.2",
     "sharp": "0.34.5"
   }
 }

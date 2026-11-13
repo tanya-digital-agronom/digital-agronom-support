@@ -82,5 +82,8 @@ Deno.serve(async (req: Request) => {
     updated_at: new Date().toISOString(),
   }, { onConflict: "installation_id" });
   if (saveError) return reply({ error: "Cannot register device" }, 500);
-  return reply({ enabled: true, platform: data.platform });
+  const deliveryReady = data.platform === "android"
+    ? !!env("FCM_SERVICE_ACCOUNT_JSON")
+    : ["APNS_PRIVATE_KEY","APNS_TEAM_ID","APNS_KEY_ID","APNS_BUNDLE_ID"].every(key => !!env(key));
+  return reply({ enabled: true, platform: data.platform, delivery_ready: deliveryReady });
 });

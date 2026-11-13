@@ -177,6 +177,11 @@ async function authChanged(userId) {
     return;
   }
   if (state.userId === userId && state.connected) return;
+  if (state.userId !== userId) {
+    state.connected = false;
+    state.token = null;
+    state.status = "";
+  }
   state.userId = userId;
   refreshControls();
   if (wanted(userId)) await requestRegistration();

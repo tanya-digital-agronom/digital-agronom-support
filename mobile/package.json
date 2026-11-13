@@ -26,8 +26,8 @@
   },
   "devDependencies": {
     "@capacitor/cli": "8.6.2",
-    "@capacitor/android": "8.6.2",
-    "@capacitor/ios": "8.6.2",
+    "@capacitor/android": "8.6.0",
+    "@capacitor/ios": "8.6.0",
     "esbuild": "0.28.2",
     "sharp": "0.34.5"
   }

@@ -132,10 +132,12 @@ async function deliver(device: PushDevice, alert: Alert, firebaseAccount: Servic
   return { ok: response.ok, expired: response.status === 410, code: response.ok ? "sent" : String(code).slice(0, 140) };
 }
 function localDay(): string {
-  // Same work-calendar date used by the team (Moscow).
-  return new Intl.DateTimeFormat("en-CA", {
+  // formatToParts avoids locale-dependent "MM/DD/YYYY" on some Deno runtimes.
+  const pieces = new Intl.DateTimeFormat("en-US", {
     timeZone: "Europe/Moscow", year: "numeric", month: "2-digit", day: "2-digit",
-  }).format(new Date());
+  }).formatToParts(new Date());
+  const value = (type: string) => pieces.find(p => p.type === type)?.value || "";
+  return value("year") + "-" + value("month") + "-" + value("day");
 }
 function dateMinusDays(value: string, days: number): string {
   const [year, month, day] = value.split("-").map(Number);

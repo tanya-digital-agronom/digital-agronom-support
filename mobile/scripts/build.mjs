@@ -43,7 +43,10 @@ const withViewport = original.replace(
   /<meta name="viewport" content="[^"]*">/i,
   '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
 );
-const afterHead = withViewport.replace('</head>', mobileHead + '</head>');
+const sdkCdn = '<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>';
+if (!withViewport.includes(sdkCdn)) throw new Error('Не найдена библиотека Supabase CDN для локальной замены.');
+const withLocalSdk = withViewport.replace(sdkCdn, '<script src="./supabase-sdk.js"></script>');
+const afterHead = withLocalSdk.replace('</head>', mobileHead + '</head>');
 const lastBody = afterHead.lastIndexOf('</body>');
 const additions = '<script src="./mobile-ui.js" defer></script>' +
   '<script src="./native-bridge.js" defer></script>';
@@ -54,6 +57,23 @@ await Promise.all([
   copyFile(join(projectDir, 'src', 'mobile-ui.js'), join(webDir, 'mobile-ui.js')),
   copyFile(join(projectDir, 'src', 'manifest.webmanifest'), join(webDir, 'manifest.webmanifest')),
 ]);
+
+// Bundle Supabase inside the app: sign-in must not depend on a third-party CDN.
+await esbuild({
+  stdin: {
+    contents: "import { createClient } from '@supabase/supabase-js'; window.supabase = { createClient };",
+    sourcefile: 'local-supabase-sdk.js',
+    resolveDir: projectDir,
+    loader: 'js',
+  },
+  outfile: join(webDir, 'supabase-sdk.js'),
+  bundle: true,
+  platform: 'browser',
+  format: 'iife',
+  target: ['chrome100', 'safari15'],
+  minify: true,
+  logLevel: 'warning',
+});
 
 // Bundle official Capacitor plugins; keep working when the same web bundle is opened in a browser.
 await esbuild({

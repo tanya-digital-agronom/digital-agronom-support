@@ -36,6 +36,16 @@ jobs:
         run: npm run build && npm run verify
       - name: Generate native Android project
         run: npx cap add android && npx cap sync android
+      - name: Configure Firebase Cloud Messaging for Android (when connected)
+        env:
+          FIREBASE_ANDROID_CONFIG_BASE64: ${{ secrets.FIREBASE_ANDROID_CONFIG_BASE64 }}
+        run: |
+          if [ -n "$FIREBASE_ANDROID_CONFIG_BASE64" ]; then
+            printf '%s' "$FIREBASE_ANDROID_CONFIG_BASE64" | base64 --decode > android/app/google-services.json
+            echo "Firebase configuration installed"
+          else
+            echo "::notice::Firebase config not set. APK is built, but background push registration cannot work until Firebase is connected."
+          fi
       - name: Compile debug APK
         run: cd android && chmod +x ./gradlew && ./gradlew --no-daemon assembleDebug
       - uses: actions/upload-artifact@v4
@@ -63,6 +73,8 @@ jobs:
         run: npm run build && npm run verify
       - name: Generate native iOS project
         run: npx cap add ios && npx cap sync ios
+      - name: Add Apple Push Notifications callbacks
+        run: node scripts/configure-ios-push.mjs
       - name: Compile for iOS Simulator (without Apple signing)
         run: |
           xcodebuild -project ios/App/App.xcodeproj \

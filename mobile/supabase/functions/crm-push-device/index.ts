@@ -55,21 +55,24 @@ Deno.serve(async (req: Request) => {
   if (data.platform !== "android" && data.platform !== "ios") {
     return reply({ error: "Invalid platform" }, 400);
   }
-  // One device token can only belong to the currently signed-in user.
-  // This prevents notifications intended for the previous login appearing
-  // on a shared phone.
-  const { error: clearError } = await db.from("crm_push_devices")
-    .delete().eq("device_token", data.token);
-  if (clearError) return reply({ error: "Cannot update device registration" }, 500);
-
-  const { error: saveError } = await db.from("crm_push_devices").insert({
+  // Preserve the device row when renewing an existing token: deleting it
+  // would erase per-day delivery deduplication records.
+  const { data: existing, error: lookupError } = await db.from("crm_push_devices")
+    .select("id,user_id").eq("device_token", data.token).maybeSingle();
+  if (lookupError) return reply({ error: "Cannot check device registration" }, 500);
+  if (existing && existing.user_id !== userId) {
+    const { error: clearError } = await db.from("crm_push_devices")
+      .delete().eq("id", existing.id);
+    if (clearError) return reply({ error: "Cannot transfer device registration" }, 500);
+  }
+  const { error: saveError } = await db.from("crm_push_devices").upsert({
     user_id: userId,
     platform: data.platform,
     device_token: data.token,
     active: true,
     last_seen_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
-  });
+  }, { onConflict: "device_token" });
   if (saveError) return reply({ error: "Cannot register device" }, 500);
   return reply({ enabled: true, platform: data.platform });
 });

@@ -32,6 +32,11 @@ assert.ok(pushCode.includes('crm-push-device'), 'Отсутствует реги
 assert.ok(pushCode.includes('pushNotificationActionPerformed'), 'Отсутствует обработка нажатий на push');
 new Function(pushCode.replace(/^import[^\n]*$/gm, '').replace('export function installPush()', 'function installPush()'));
 const deps = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
+const firebase = JSON.parse(await readFile(join(root, 'firebase', 'google-services.json'), 'utf8'));
+const capacitorConfig = JSON.parse(await readFile(join(root, 'capacitor.config.json'), 'utf8'));
+assert.equal(firebase.project_info.project_id, 'agronom-ec8b7');
+assert.ok(firebase.client.some(x => x.client_info?.android_client_info?.package_name === capacitorConfig.appId),
+  'Firebase Android package must match Capacitor appId');
 assert.ok(deps.dependencies['@capacitor/push-notifications'], 'Push-плагин не указан в пакетах приложения');
 assert.ok(css.includes('#app.shell{display:block!important;height:auto!important;min-height:100dvh!important'), 'В мобильном приложении запрещена фиксированная высота контейнера CRM');
 assert.ok(css.includes('overflow:visible!important;touch-action:auto!important;overscroll-behavior-y:auto'), 'Главный экран должен использовать прокрутку документа');

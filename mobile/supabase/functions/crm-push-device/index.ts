@@ -82,8 +82,16 @@ Deno.serve(async (req: Request) => {
     updated_at: new Date().toISOString(),
   }, { onConflict: "installation_id" });
   if (saveError) return reply({ error: "Cannot register device" }, 500);
-  const deliveryReady = !!env("CRM_PUSH_CRON_SECRET") && (data.platform === "android"
-    ? !!env("FCM_SERVICE_ACCOUNT_JSON")
+  const { data: cronReady, error: cronError } = await db.rpc("crm_push_cron_ready");
+  let firebaseReady = false;
+  try {
+    const service = JSON.parse(env("FCM_SERVICE_ACCOUNT_JSON"));
+    firebaseReady = service.project_id === "agronom-ec8b7" &&
+      typeof service.private_key === "string" &&
+      !!service.client_email;
+  } catch { /* No Firebase server credentials configured yet. */ }
+  const deliveryReady = !cronError && cronReady === true && (data.platform === "android"
+    ? firebaseReady
     : ["APNS_PRIVATE_KEY","APNS_TEAM_ID","APNS_KEY_ID","APNS_BUNDLE_ID"].every(key => !!env(key)));
   return reply({ enabled: true, platform: data.platform, delivery_ready: deliveryReady });
 });

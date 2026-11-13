@@ -36,43 +36,51 @@ Deno.serve(async (req: Request) => {
   }
   const userId = authData.user.id;
 
-  let data: { action?: unknown; token?: unknown; platform?: unknown };
+  let data: { action?: unknown; token?: unknown; platform?: unknown; installation_id?: unknown };
   try { data = await req.json(); }
   catch { return reply({ error: "Invalid JSON" }, 400); }
-  if (!isPushToken(data.token)) return reply({ error: "Invalid device token" }, 400);
   if (data.action !== "register" && data.action !== "disable") {
     return reply({ error: "Invalid action" }, 400);
+  }
+  if (typeof data.installation_id !== "string" ||
+      !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(data.installation_id)) {
+    return reply({ error: "Invalid installation identifier" }, 400);
   }
   const db = createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } });
 
   if (data.action === "disable") {
     const { error } = await db.from("crm_push_devices").delete()
-      .eq("user_id", userId).eq("device_token", data.token);
+      .eq("user_id", userId).eq("installation_id", data.installation_id);
     if (error) return reply({ error: "Cannot disable device" }, 500);
     return reply({ enabled: false });
   }
 
+  if (!isPushToken(data.token)) return reply({ error: "Invalid device token" }, 400);
   if (data.platform !== "android" && data.platform !== "ios") {
     return reply({ error: "Invalid platform" }, 400);
   }
-  // Preserve the device row when renewing an existing token: deleting it
-  // would erase per-day delivery deduplication records.
   const { data: existing, error: lookupError } = await db.from("crm_push_devices")
-    .select("id,user_id").eq("device_token", data.token).maybeSingle();
-  if (lookupError) return reply({ error: "Cannot check device registration" }, 500);
+    .select("id,user_id").eq("installation_id", data.installation_id).maybeSingle();
+  if (lookupError) return reply({ error: "Cannot check installation" }, 500);
   if (existing && existing.user_id !== userId) {
     const { error: clearError } = await db.from("crm_push_devices")
       .delete().eq("id", existing.id);
-    if (clearError) return reply({ error: "Cannot transfer device registration" }, 500);
+    if (clearError) return reply({ error: "Cannot transfer installation" }, 500);
   }
+  // Tokens rotate. Remove an old registration for this exact token on
+  // another installation, while preserving this installation's dedup history.
+  const { error: tokenError } = await db.from("crm_push_devices")
+    .delete().eq("device_token", data.token).neq("installation_id", data.installation_id);
+  if (tokenError) return reply({ error: "Cannot rotate device token" }, 500);
   const { error: saveError } = await db.from("crm_push_devices").upsert({
+    installation_id: data.installation_id,
     user_id: userId,
     platform: data.platform,
     device_token: data.token,
     active: true,
     last_seen_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
-  }, { onConflict: "device_token" });
+  }, { onConflict: "installation_id" });
   if (saveError) return reply({ error: "Cannot register device" }, 500);
   return reply({ enabled: true, platform: data.platform });
 });

@@ -7,6 +7,11 @@ on:
       - 'mobile/**'
       - '.github/workflows/mobile-build.yml'
 
+# Avoid compiling every intermediate commit when multiple mobile files change.
+concurrency:
+  group: mobile-preview-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 

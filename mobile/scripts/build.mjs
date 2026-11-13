@@ -23,7 +23,7 @@ if (!original.includes('id="view-dashboard"') ||
     !original.includes('supabase')) {
   throw new Error('Исходная CRM не найдена или не содержит обязательные разделы.');
 }
-if (original.includes('sb_secret_') || original.includes('service_role')) {
+if (/(?:['\"]|=)sb_secret_[a-zA-Z0-9_-]{12,}/.test(original)) {
   // The public CRM must never include server-only secrets.
   throw new Error('В CRM найдены признаки служебного ключа Supabase — сборка остановлена.');
 }

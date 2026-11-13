@@ -1,0 +1,25 @@
+{
+  "name": "Цифровой Агроном — CRM",
+  "short_name": "Цифровой Агроном",
+  "description": "Обращения, задачи, календарь и материалы по внедрению",
+  "lang": "ru",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F6F7F5",
+  "theme_color": "#E68A3A",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

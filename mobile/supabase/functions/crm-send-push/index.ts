@@ -185,26 +185,32 @@ Deno.serve(async (req: Request) => {
     if (!firebaseAccount) return answer({ error: "Firebase is not configured" }, 503);
     const { data: testDevices, error: deviceError } = await db.from("crm_push_devices")
       .select("id,user_id,device_token,platform").eq("active", true).eq("platform", "android")
-      .order("last_seen_at", { ascending: false }).limit(1);
-    if (deviceError) return answer({ error: "Cannot retrieve test device" }, 500);
-    const device = (testDevices || [])[0] as PushDevice | undefined;
-    if (!device) return answer({ error: "No active Android devices" }, 409);
-    try {
-      const delivery = await deliver(device, {
-        kind: "test", user_id: device.user_id, source_id: crypto.randomUUID(),
-        title: "Цифровой Агроном · тест 🔔",
-        body: "Это проверочное push-уведомление. Отправка с сервера настроена.",
-      }, firebaseAccount);
-      if (delivery.expired) {
-        await db.from("crm_push_devices").update({ active: false }).eq("id", device.id);
+      .order("last_seen_at", { ascending: false }).limit(500);
+    if (deviceError) return answer({ error: "Cannot retrieve test devices" }, 500);
+    const devices = (testDevices || []) as PushDevice[];
+    if (!devices.length) return answer({ error: "No active Android devices" }, 409);
+    const result = { test: true, platform: "android", devices: devices.length, accepted: 0, failed: 0, errors: [] as string[] };
+    for (const device of devices) {
+      try {
+        const delivery = await deliver(device, {
+          kind: "test", user_id: device.user_id, source_id: crypto.randomUUID(),
+          title: "Цифровой Агроном · тест 🔔",
+          body: "Это проверочное push-уведомление. Отправка с сервера настроена.",
+        }, firebaseAccount);
+        if (delivery.ok) result.accepted++;
+        else {
+          result.failed++;
+          result.errors.push(delivery.code);
+        }
+        if (delivery.expired) {
+          await db.from("crm_push_devices").update({ active: false }).eq("id", device.id);
+        }
+      } catch {
+        result.failed++;
+        result.errors.push("transport_error");
       }
-      return answer({
-        test: true, platform: "android", accepted: delivery.ok,
-        code: delivery.code, note: "Accepted means FCM accepted the message, not that it was displayed.",
-      }, delivery.ok ? 200 : 502);
-    } catch {
-      return answer({ test: true, accepted: false, code: "transport_error" }, 502);
     }
+    return answer({ ...result, note: "FCM accepted messages; actual display depends on the device." }, result.accepted ? 200 : 502);
   }
   const today = localDay(), threshold = dateMinusDays(today, 3);
   const { data: admins, error: roleError } = await db.from("profiles").select("id").eq("role", "admin");

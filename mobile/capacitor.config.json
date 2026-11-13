@@ -1,0 +1,19 @@
+{
+  "appId": "ru.digitalagronom.support",
+  "appName": "Цифровой Агроном",
+  "webDir": "www",
+  "backgroundColor": "#F6F7F5",
+  "android": {
+    "allowMixedContent": false,
+    "backgroundColor": "#F6F7F5"
+  },
+  "ios": {
+    "contentInset": "automatic",
+    "preferredContentMode": "mobile"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  }
+}

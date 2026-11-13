@@ -50,9 +50,11 @@ async function onRegistered(token) {
   if (!token?.value || !wanted() || !state.userId) return;
   state.token = token.value;
   try {
-    await deviceRequest("register", state.token);
+    const response = await deviceRequest("register", state.token);
     state.connected = true;
-    setStatus("Уведомления включены для этого телефона.");
+    setStatus(response.delivery_ready
+      ? "Телефон подключён. Уведомления включены."
+      : "Телефон зарегистрирован. Для доставки push нужно завершить настройку Firebase/Apple на сервере.");
   } catch (error) {
     state.connected = false;
     setStatus("Регистрация устройства не удалась: " + (error?.message || String(error)));

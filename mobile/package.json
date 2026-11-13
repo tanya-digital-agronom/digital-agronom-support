@@ -22,7 +22,8 @@
     "jspdf": "3.0.4",
     "html2canvas": "1.4.1",
     "canvg": "4.0.3",
-    "dompurify": "3.2.6"
+    "dompurify": "3.2.6",
+    "@supabase/supabase-js": "2.119.0"
   },
   "devDependencies": {
     "@capacitor/cli": "8.6.2",

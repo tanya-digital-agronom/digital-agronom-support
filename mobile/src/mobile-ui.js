@@ -149,9 +149,10 @@
       closeMore();
       target.click(); // Runs existing CRM navigation (permissions / data loading unchanged).
       updateTabs();
-      // On Android/iOS the page content scrolls inside <main>, not window.
-      main.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      // The document is the sole scrolling surface on Android and iPhone.
+      // Reset the native viewport after changing CRM sections.
+      window.scrollTo(0, 0);
+      if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
     }
 
     function closeOverlays() {

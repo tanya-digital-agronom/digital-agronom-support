@@ -13,17 +13,36 @@
 
 Кнопка включения: **Мобильное приложение → Ещё → Уведомления на телефон → Включить уведомления**. Разрешение запрашивается только после нажатия. При выходе через меню «Ещё» устройство удаляется из списка подписок.
 
-## 1. Подключить Android / Firebase
+## 1. Android / Firebase — клиент подключён
 
-1. На https://console.firebase.google.com создайте проект Firebase (или используйте существующий), добавьте **Android app** с package name `ru.digitalagronom.support`.
-2. Скачайте **`google-services.json`** из настроек Android-приложения Firebase.
-3. В GitHub откройте **Settings → Secrets and variables → Actions → New repository secret**. Имя: **`FIREBASE_ANDROID_CONFIG_BASE64`**. Значение — содержимое `google-services.json`, закодированное в Base64.
-   - Windows PowerShell: `[Convert]::ToBase64String([IO.File]::ReadAllBytes("C:\\path\\to\\google-services.json"))`.
-   - В GitHub Actions перед сборкой значение будет записано в `mobile/android/app/google-services.json`.
-4. В настройках Firebase Project Settings → Service accounts создайте **новый служебный ключ** для Firebase Admin SDK (JSON) и сохраните его **только** в Supabase Dashboard → Edge Functions → Secrets, имя **`FCM_SERVICE_ACCOUNT_JSON`** (весь JSON в одной переменной).
-5. Пересоберите Android APK через GitHub Actions. В установленном приложении авторизуйтесь и разрешите уведомления.
+**Уже настроено:** проект Firebase `agronom-ec8b7`, Android package `ru.digitalagronom.support`.
+Пользовательский файл `google-services.json` проверен и добавлен в
+`mobile/firebase/google-services.json`. Это **публичная клиентская конфигурация**,
+а не приватный административный ключ Firebase.
 
-**Не путайте** `google-services.json` (конфигурация клиентского приложения) и служебный Firebase Admin SDK JSON (закрытый ключ): **закрытый ключ не добавлять в GitHub**.
+Новая сборка GitHub Actions автоматически кладёт эту конфигурацию в
+`mobile/android/app/google-services.json` перед компиляцией APK.
+Локальная сборка `npm run android:init` также делает это автоматически.
+GitHub-секрет `FIREBASE_ANDROID_CONFIG_BASE64` больше **не требуется**,
+но может использоваться как необязательная замена конфигурации.
+
+**Остался один Firebase-шаг для настоящей доставки:**
+
+1. Откройте [Firebase Console](https://console.firebase.google.com/) → проект
+   **agronom** → значок шестерёнки **Project settings** → **Service accounts**.
+2. Нажмите **Generate new private key** и подтвердите. Вы получите **другой JSON** —
+   административный служебный ключ.
+3. **Не загружайте его в GitHub, APK, чат или публичные сайты.**
+   В [Supabase Dashboard](https://supabase.com/dashboard/project/pgobzqractzbscitnvlr)
+   откройте **Edge Functions → Secrets** и создайте секрет
+   `FCM_SERVICE_ACCOUNT_JSON`: значение — полный текст JSON, полученного на шаге 2.
+   Если интерфейс не принимает многострочное значение, переведите JSON в одну
+   строку локально перед вставкой. Ключ должен храниться только на сервере.
+4. В Firebase убедитесь, что API **Firebase Cloud Messaging API (V1)** включён.
+5. Затем выполните настройку общего секретного ключа планировщика из **шага 3** ниже.
+
+**Важно:** файл `google-services.json` сам по себе не даёт серверу права отправлять push.
+Успешная сборка APK тоже не означает, что доставка уведомлений уже активна.
 
 ## 2. Подключить iPhone / Apple APNs
 

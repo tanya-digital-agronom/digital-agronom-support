@@ -55,6 +55,110 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent}
   #app #view-history .history-toolbar{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
   #app #view-history .history-toolbar>#search{grid-column:1/-1!important}
   #app .filter{min-width:0!important;font-size:12px;max-width:100%}
+  /* Team tasks: full-width assignee picker, comfortable thumb targets and
+     a scrollable menu that stays within the phone width. */
+  #view-tasks .toolbar{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+    align-items:stretch;
+    overflow:visible!important;
+  }
+  #view-tasks #taskSearch{
+    grid-column:1/-1!important;
+    width:100%;
+    min-width:0;
+    min-height:44px;
+  }
+  #view-tasks #taskFilterWrap{
+    grid-column:1;
+    grid-row:2;
+    min-width:0!important;
+    width:100%;
+  }
+  #view-tasks #taskDateFilterWrap{
+    grid-column:2;
+    grid-row:2;
+    min-width:0!important;
+    width:100%!important;
+  }
+  #view-tasks #taskAssigneeWrap{
+    grid-column:1/-1;
+    grid-row:3;
+    position:relative;
+    width:100%;
+    min-width:0!important;
+    max-width:100%;
+    z-index:30;
+  }
+  #view-tasks #taskAssigneeTrigger{
+    width:100%;
+    min-width:0!important;
+    max-width:100%;
+    min-height:46px;
+    padding:11px 13px!important;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:9px;
+    border:1px solid #dfe5eb;
+    border-radius:11px;
+    background:#fff!important;
+    box-shadow:none;
+    font-size:13px;
+    font-weight:650;
+    color:var(--mobile-ink);
+    text-align:left;
+    touch-action:manipulation;
+  }
+  #view-tasks #taskAssigneeLabel{
+    flex:1 1 auto;
+    display:block;
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    line-height:1.35;
+  }
+  #view-tasks #taskAssigneeTrigger svg{
+    flex:0 0 17px;
+    width:17px;
+    height:17px;
+    color:#8a97a0;
+  }
+  #view-tasks #taskAssigneeTrigger:focus-visible,
+  #view-tasks #taskAssigneeTrigger[aria-expanded="true"]{
+    outline:none;
+    border-color:#e89147;
+    box-shadow:0 0 0 3px rgba(237,132,46,.12);
+  }
+  #view-tasks #taskAssigneeMenu{
+    left:0;
+    right:0;
+    top:calc(100% + 6px);
+    box-sizing:border-box;
+    width:100%;
+    min-width:0!important;
+    max-width:100%;
+    max-height:min(310px,45dvh);
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+    touch-action:pan-y;
+    padding:7px;
+    border-radius:12px;
+    z-index:150;
+  }
+  #view-tasks #taskAssigneeMenu button{
+    width:100%;
+    min-height:44px;
+    padding:10px 12px;
+    text-align:left;
+    white-space:normal;
+    overflow-wrap:anywhere;
+    font-size:13px;
+    line-height:1.35;
+  }
   #app .cal-filter-wrap,#app .unified-date-wrap{min-width:0!important;max-width:100%}
   #app .case-date-popover{max-width:calc(100vw - 32px)}
   #app .report-controls .row{align-items:stretch!important}
